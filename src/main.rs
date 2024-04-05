@@ -1,7 +1,13 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+mod database;
+
+use actix_web::{web, App, HttpServer};
+use database::get_database;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let database = get_database("sqlite");
+    database.init();
+
     HttpServer::new(|| {
         App::new()
             .service(web::redirect("/", "http://github.com/fabricated-world/fabulous-server"))
